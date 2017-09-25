@@ -1,0 +1,6 @@
+C:\repos\TestMethod\TestMethod\bin\Debug\TestMethod.dll
+C:\repos\TestMethod\TestMethod\bin\Debug\TestMethod.pdb
+C:\repos\TestMethod\TestMethod\obj\Debug\TestMethod.csprojResolveAssemblyReference.cache
+C:\repos\TestMethod\TestMethod\obj\Debug\TestMethod.csproj.CoreCompileInputs.cache
+C:\repos\TestMethod\TestMethod\obj\Debug\TestMethod.dll
+C:\repos\TestMethod\TestMethod\obj\Debug\TestMethod.pdb
