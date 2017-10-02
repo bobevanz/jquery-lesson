@@ -20,7 +20,6 @@ namespace PRS_web.Models
         }
 
         public System.Data.Entity.DbSet<PRS_web.Models.User> Users { get; set; }
-
         public System.Data.Entity.DbSet<PRS_web.Models.Vendor> Vendors { get; set; }
     }
 }
