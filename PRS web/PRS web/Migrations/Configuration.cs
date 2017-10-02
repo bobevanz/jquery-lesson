@@ -29,7 +29,10 @@ namespace PRS_web.Migrations
             //
             context.Users.AddOrUpdate(
                 u => u.UserName,
-                    new User { UserName = "Admin", Password ="Admin", FirstName="System", LastName="Admin",Phone="513-264-2574",Email="bobevans547@gmail.com", IsReviewer=true, IsAdmin=true }
+                    new User { UserName = "Admin", Password ="Admin",
+                        FirstName ="System", LastName="Admin",
+                        Phone ="513-264-2574",Email="bobevans547@gmail.com",
+                        IsReviewer =true, IsAdmin=true }
                 );
         }
     }

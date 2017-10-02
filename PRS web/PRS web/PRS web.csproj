@@ -150,12 +150,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\VendorsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201710021526467_initialization.cs" />
     <Compile Include="Migrations\201710021526467_initialization.Designer.cs">
       <DependentUpon>201710021526467_initialization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710021620422_vendor controller.cs" />
+    <Compile Include="Migrations\201710021620422_vendor controller.Designer.cs">
+      <DependentUpon>201710021620422_vendor controller.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\PRS_dbContext.cs" />
@@ -205,6 +210,11 @@
     <Content Include="Views\Users\Details.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Vendors\Create.cshtml" />
+    <Content Include="Views\Vendors\Delete.cshtml" />
+    <Content Include="Views\Vendors\Details.cshtml" />
+    <Content Include="Views\Vendors\Edit.cshtml" />
+    <Content Include="Views\Vendors\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -225,6 +235,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201710021526467_initialization.resx">
       <DependentUpon>201710021526467_initialization.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710021620422_vendor controller.resx">
+      <DependentUpon>201710021620422_vendor controller.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
