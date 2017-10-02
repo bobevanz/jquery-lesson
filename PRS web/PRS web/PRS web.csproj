@@ -149,6 +149,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\PurchaseRequestLineItemsController.cs" />
+    <Compile Include="Controllers\PurchaseRequestsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\VendorsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -162,8 +165,27 @@
     <Compile Include="Migrations\201710021620422_vendor controller.Designer.cs">
       <DependentUpon>201710021620422_vendor controller.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710021741499_Product and ProductController.cs" />
+    <Compile Include="Migrations\201710021741499_Product and ProductController.Designer.cs">
+      <DependentUpon>201710021741499_Product and ProductController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710021809196_Foreign Key.cs" />
+    <Compile Include="Migrations\201710021809196_Foreign Key.Designer.cs">
+      <DependentUpon>201710021809196_Foreign Key.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710021850250_added purchase request.cs" />
+    <Compile Include="Migrations\201710021850250_added purchase request.Designer.cs">
+      <DependentUpon>201710021850250_added purchase request.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710021903452_added migration config.cs" />
+    <Compile Include="Migrations\201710021903452_added migration config.Designer.cs">
+      <DependentUpon>201710021903452_added migration config.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Models\PRS_dbContext.cs" />
+    <Compile Include="Models\PurchaseRequest.cs" />
+    <Compile Include="Models\PurchaseRequestLineItem.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vendor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -215,6 +237,21 @@
     <Content Include="Views\Vendors\Details.cshtml" />
     <Content Include="Views\Vendors\Edit.cshtml" />
     <Content Include="Views\Vendors\Index.cshtml" />
+    <Content Include="Views\Products\Create.cshtml" />
+    <Content Include="Views\Products\Delete.cshtml" />
+    <Content Include="Views\Products\Details.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\PurchaseRequests\Create.cshtml" />
+    <Content Include="Views\PurchaseRequests\Delete.cshtml" />
+    <Content Include="Views\PurchaseRequests\Details.cshtml" />
+    <Content Include="Views\PurchaseRequests\Edit.cshtml" />
+    <Content Include="Views\PurchaseRequests\Index.cshtml" />
+    <Content Include="Views\PurchaseRequestLineItems\Create.cshtml" />
+    <Content Include="Views\PurchaseRequestLineItems\Delete.cshtml" />
+    <Content Include="Views\PurchaseRequestLineItems\Details.cshtml" />
+    <Content Include="Views\PurchaseRequestLineItems\Edit.cshtml" />
+    <Content Include="Views\PurchaseRequestLineItems\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -238,6 +275,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710021620422_vendor controller.resx">
       <DependentUpon>201710021620422_vendor controller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710021741499_Product and ProductController.resx">
+      <DependentUpon>201710021741499_Product and ProductController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710021809196_Foreign Key.resx">
+      <DependentUpon>201710021809196_Foreign Key.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710021850250_added purchase request.resx">
+      <DependentUpon>201710021850250_added purchase request.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710021903452_added migration config.resx">
+      <DependentUpon>201710021903452_added migration config.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
