@@ -7,12 +7,38 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PRS_web.Models;
+using Utility;
 
 namespace PRS_web.Controllers
 {
     public class UsersController : Controller
     {
         private PRS_dbContext db = new PRS_dbContext();
+
+        public ActionResult List() {
+            //This will ALWAYS return an array
+            // it may have 0, 1 or more items within the array
+            return Json(db.Users.ToList(), JsonRequestBehavior.AllowGet);
+
+        }
+            //this will return one user or an error emssage
+        public ActionResult Get(int? id) {
+            //error if nothing is passed in for ID
+            if (id == null) {
+                return Json(new msg { Result = "Failure", Message = "Id is Null" }, JsonRequestBehavior.AllowGet);
+            
+                
+            }
+            //return a user for the id or null if not found
+            User user = db.Users.Find(id);
+            //this is true if the id is not found
+            if(user == null){
+                return Json(new msg { Result = "Failure", Message = "Id not found"}, JsonRequestBehavior.AllowGet);
+            }
+            // if here, everything is good; we have a user
+            return Json(user, JsonRequestBehavior.AllowGet);
+        }
+        #region MVC Methods
 
         // GET: Users
         public ActionResult Index()
@@ -114,6 +140,8 @@ namespace PRS_web.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+#endregion
 
         protected override void Dispose(bool disposing)
         {
