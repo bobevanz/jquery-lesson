@@ -9,7 +9,6 @@ using System.Web.Mvc;
 using PRS_web.Models;
 using Utility;
 using System.Web.Http;
-
 namespace PRS_web.Controllers
 {
     public class UsersController : Controller

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +9,7 @@ namespace PRS_web.Models
 {
     public class Vendor { 
         public int ID { get; set; }
+        [Index(IsUnique = true)]
         [StringLength(30)]
         [Required]
         public string Code { get; set; }
