@@ -187,7 +187,12 @@
     <Compile Include="Migrations\201710021903452_added migration config.Designer.cs">
       <DependentUpon>201710021903452_added migration config.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710031538099_added unique index.cs" />
+    <Compile Include="Migrations\201710031538099_added unique index.Designer.cs">
+      <DependentUpon>201710031538099_added unique index.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\indexAttribute.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\PRS_dbContext.cs" />
     <Compile Include="Models\PurchaseRequest.cs" />
@@ -296,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710021903452_added migration config.resx">
       <DependentUpon>201710021903452_added migration config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710031538099_added unique index.resx">
+      <DependentUpon>201710031538099_added unique index.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,7 +9,7 @@ namespace PRS_web.Models
 {
     public class User{
         public int id { get; set; }
-
+        [Index(IsUnique = true)]
         [StringLength(30)] //always required for strings
         [Required] //always required for bool
 

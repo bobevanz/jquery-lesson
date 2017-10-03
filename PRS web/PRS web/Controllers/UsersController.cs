@@ -48,6 +48,42 @@ namespace PRS_web.Controllers
             db.SaveChanges();
             return Json(new msg { Result = "Success", Message = "Add Successful" });
         }
+        public ActionResult Change([FromBody] User user) {
+            if (user == null || user.UserName == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "User parameter is missing or invalid." });
+            }
+            // If we get here, just update the user
+            User tempUser = db.Users.Find(user.id);
+            tempUser.UserName = user.UserName;
+            tempUser.Password = user.Password;
+            tempUser.FirstName = user.FirstName;
+            tempUser.LastName = user.LastName;
+            tempUser.Phone = user.Phone;
+            tempUser.Email = user.Email;
+            tempUser.IsReviewer = user.IsReviewer;
+            tempUser.IsAdmin = user.IsAdmin;
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Change Successful" });
+
+        }
+            
+        public ActionResult Remove([FromBody] User user){
+            if (user == null || user.id <= 0){
+                return Json(new msg { Result = "Failure", Message = "User parameter is missing or invalid." });
+            }
+            // If we get here, delete the user, but first we must find the user
+            User tempUser = db.Users.Find(user.id);
+            if(tempUser == null) {
+                return Json(new msg { Result = "Failure", Message = "User Id not found." });
+
+            }
+            db.Users.Remove(tempUser);
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Remove Successful" });
+
+        }
+
         #region MVC Methods
 
         // GET: Users
