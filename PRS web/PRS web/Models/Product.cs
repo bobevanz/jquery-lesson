@@ -10,8 +10,8 @@ namespace PRS_web.Models
     public class Product
     {
         public int ID { get; set; }
-        public int VendorId { get; set; } //
-        public Vendor vendor { get; set; } //
+        public virtual Vendor VendorId { get; set; } 
+        public virtual Vendor vendor { get; set; } 
         [StringLength(30)]
         [Required]
         public string PartNumber { get; set; }
@@ -24,7 +24,7 @@ namespace PRS_web.Models
         [Required]
         public string Unit { get; set; }
         [StringLength(50)]
-        [Required]
+        
         public string PhotoPath { get; set; }
 
     }

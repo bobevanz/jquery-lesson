@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PRS_web.Models;
+using Utility;
+using System.Web.Http;
 
 namespace PRS_web.Controllers
 {
@@ -14,6 +16,82 @@ namespace PRS_web.Controllers
     {
         private PRS_dbContext db = new PRS_dbContext();
 
+        public ActionResult List()
+        {
+            return Json(db.Products.ToList(), JsonRequestBehavior.AllowGet);
+
+
+        }
+        // GET: Vendors
+        public ActionResult Get(Vendor ID)
+        {
+            if (ID == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Id is Null" }, JsonRequestBehavior.AllowGet);
+
+            }
+            Product product = db.Products.Find(ID);                //////////
+            Vendor vendor = db.Vendors.Find(product.VendorId);     //////////
+            
+            if (product == null || vendor == null)                 //////////
+            {
+                return Json(new msg { Result = "Failure", Message = "Id not found" }, JsonRequestBehavior.AllowGet);
+            }
+            // if here, everything is good; we have a product
+            return Json(product, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Add([FromBody] Product product, Vendor VendorID)   /////
+        
+        {
+            Vendor vendor = db.Vendors.Add(product.VendorId);  /////
+            if (product == null || VendorID == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Product parameter is missing or invalid." });
+            }
+            // If we get here, add the Product
+            db.Vendors.Add(product.VendorId);                             ////// 
+            db.Products.Add(product);
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Add Successful" });
+        }
+        public ActionResult Change([FromBody] Product product)
+        {
+            if (product == null || product.Name == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Product parameter is missing or invalid." });
+            }
+            // If we get here, just update the product
+            Product tempProduct = db.Products.Find(product.ID);
+            tempProduct.ID = product.ID;
+            tempProduct.VendorId = product.VendorId;
+            tempProduct.vendor = product.vendor;
+            tempProduct.PartNumber = tempProduct.PartNumber;
+            tempProduct.Name = product.Name;
+            tempProduct.Price = product.Price;
+            tempProduct.Unit = product.Unit;
+            tempProduct.PhotoPath = product.PhotoPath;
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Change Successful" });
+
+        }
+        public ActionResult Remove([FromBody] Product product)
+        {
+            if (product == null || product.ID <= 0)
+            {
+                return Json(new msg { Result = "Failure", Message = "Product parameter is missing or invalid." });
+            }
+            // If we get here, delete the vendor, but first we must find the vendor
+            Product tempProduct = db.Products.Find(product.ID);
+            if (tempProduct == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Product Id not found." });
+
+            }
+            db.Products.Remove(tempProduct);
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Remove Successful" });
+
+        }
         // GET: Products
         public ActionResult Index()
         {
@@ -44,7 +122,7 @@ namespace PRS_web.Controllers
         // POST: Products/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,VendorId,PartNumber,Name,Price,Unit,PhotoPath")] Product product)
         {
@@ -76,7 +154,7 @@ namespace PRS_web.Controllers
         // POST: Products/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,VendorId,PartNumber,Name,Price,Unit,PhotoPath")] Product product)
         {
@@ -105,7 +183,7 @@ namespace PRS_web.Controllers
         }
 
         // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

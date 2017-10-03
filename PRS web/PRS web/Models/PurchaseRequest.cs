@@ -9,8 +9,8 @@ namespace PRS_web.Models
     public class PurchaseRequest
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public virtual User UserId { get; set; }
+        public virtual User User { get; set; }
         [StringLength(30)]
         [Required]
         public string Description { get; set; }

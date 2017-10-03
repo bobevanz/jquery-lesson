@@ -7,12 +7,90 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PRS_web.Models;
+using Utility;
+using System.Web.Http;
 
 namespace PRS_web.Controllers
 {
     public class PurchaseRequestLineItemsController : Controller
     {
         private PRS_dbContext db = new PRS_dbContext();
+
+        public ActionResult List()
+        {
+            return Json(db.PurchaseRequestLineItems.ToList(), JsonRequestBehavior.AllowGet);
+
+
+        }
+        // GET: Purchase requests
+        public ActionResult Get(PurchaseRequestLineItem Id)
+        {
+            if (Id == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Id is Null" }, JsonRequestBehavior.AllowGet);
+
+            }
+            PurchaseRequestLineItem purchaserequestlineitem = db.PurchaseRequestLineItems.Find(Id);                //////////
+            PurchaseRequest purchaserequest = db.PurchaseRequests.Find(purchaserequestlineitem.PurchaseRequestId);     //////////
+            Product product = db.Products.Find(purchaserequestlineitem.ProductId);
+            if (purchaserequestlineitem == null || purchaserequest == null || product==null)                 //////////
+            {
+                return Json(new msg { Result = "Failure", Message = "Id not found" }, JsonRequestBehavior.AllowGet);
+            }
+            // if here, everything is good; we have a line item request
+            return Json(purchaserequestlineitem, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Add([FromBody] PurchaseRequestLineItem purchaserequestlineitem, PurchaseRequest purchaseRequest, Product product)
+
+        {
+            User tempUser = db.Users.Add(purchaserequestlineitem.purchaserequest);  /////
+            if (purchaserequest == null || purchaserequest.UserId == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
+            }
+            // If we get here, add the Product
+            db.Users.Add(purchaserequest.UserId);                             ////// 
+            db.PurchaseRequests.Add(purchaserequest);
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Add Successful" });
+        }
+        public ActionResult Change([FromBody] PurchaseRequestLineItem purchaserequestlineitem)
+        {
+            if (purchaserequestlineitem == null || purchaserequestlineitem.purchaserequest == null || purchaserequestlineitem.Product == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
+            }
+            // If we get here, just update the product
+            PurchaseRequestLineItem tempPurchaseRequestLineItem = db.PurchaseRequestLineItems.Find(purchaserequestlineitem.Id);
+            tempPurchaseRequestLineItem.Id = purchaserequestlineitem.Id;
+            tempPurchaseRequestLineItem.PurchaseRequestId = purchaserequestlineitem.PurchaseRequestId;
+            tempPurchaseRequestLineItem.purchaserequest = purchaserequestlineitem.purchaserequest;
+            tempPurchaseRequestLineItem.ProductId = purchaserequestlineitem.ProductId;
+            tempPurchaseRequestLineItem.Product = purchaserequestlineitem.Product;
+            tempPurchaseRequestLineItem.Quantity = purchaserequestlineitem.Quantity;
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Change Successful" });
+
+        }
+        public ActionResult Remove([FromBody] PurchaseRequestLineItem purchaserequestlineitem)
+        {
+            if (purchaserequestlineitem == null || purchaserequestlineitem.Id <= 0)
+            {
+                return Json(new msg { Result = "Failure", Message = "Line item parameter is missing or invalid." });
+            }
+            // If we get here, delete the line item, but first we must find the id
+            PurchaseRequestLineItem tempPurchaseRequestLineItem = db.PurchaseRequestLineItems.Find(purchaserequestlineitem.Id);
+            if (tempPurchaseRequestLineItem == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Line item Id not found." });
+
+            }
+            db.PurchaseRequestLineItems.Remove(tempPurchaseRequestLineItem);
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Remove Successful" });
+
+        }
+
 
         // GET: PurchaseRequestLineItems
         public ActionResult Index()
@@ -47,7 +125,7 @@ namespace PRS_web.Controllers
         // POST: PurchaseRequestLineItems/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,PurchaseRequestId,ProductId,Quantity")] PurchaseRequestLineItem purchaseRequestLineItem)
         {
@@ -83,7 +161,7 @@ namespace PRS_web.Controllers
         // POST: PurchaseRequestLineItems/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,PurchaseRequestId,ProductId,Quantity")] PurchaseRequestLineItem purchaseRequestLineItem)
         {
@@ -114,7 +192,7 @@ namespace PRS_web.Controllers
         }
 
         // POST: PurchaseRequestLineItems/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [System.Web.Http.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
