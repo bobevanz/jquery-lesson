@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using PRS_web.Models;
 using Utility;
+using System.Web.Http;
 
 namespace PRS_web.Controllers
 {
@@ -37,6 +38,15 @@ namespace PRS_web.Controllers
             }
             // if here, everything is good; we have a user
             return Json(user, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Add([FromBody] User user) {
+            if(user== null || user.UserName== null) {
+                return Json(new msg{Result ="Failure", Message="User parameter is missing or invalid." });
+            }
+            // If we get here, add the user
+            db.Users.Add(user);
+            db.SaveChanges();
+            return Json(new msg { Result = "Success", Message = "Add Successful" });
         }
         #region MVC Methods
 
@@ -70,7 +80,7 @@ namespace PRS_web.Controllers
         // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "id,UserName,Password,FirstName,LastName,Phone,Email,IsReviewer,IsAdmin")] User user)
         {
@@ -102,7 +112,7 @@ namespace PRS_web.Controllers
         // POST: Users/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "id,UserName,Password,FirstName,LastName,Phone,Email,IsReviewer,IsAdmin")] User user)
         {
@@ -131,7 +141,7 @@ namespace PRS_web.Controllers
         }
 
         // POST: Users/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [System.Web.Mvc.HttpPost, System.Web.Mvc.ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
