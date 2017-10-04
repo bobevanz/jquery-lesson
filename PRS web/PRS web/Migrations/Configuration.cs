@@ -78,6 +78,7 @@ namespace PRS_web.Migrations
                         IsPreApproved = true
                     }
                 );
+            
         }
 
     }

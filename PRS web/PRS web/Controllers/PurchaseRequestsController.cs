@@ -23,14 +23,14 @@ namespace PRS_web.Controllers
 
         }
         // GET: Purchase requests
-        public ActionResult Get(User Id)
+        public ActionResult Get(int? id)
         {
-            if (Id == null)
+            if (id == null)
             {
                 return Json(new msg { Result = "Failure", Message = "Id is Null" }, JsonRequestBehavior.AllowGet);
 
             }
-            PurchaseRequest purchaserequest = db.PurchaseRequests.Find(Id);                //////////
+            PurchaseRequest purchaserequest = db.PurchaseRequests.Find(id);                //////////
             User User = db.Users.Find(purchaserequest.UserId);     //////////
 
             if (purchaserequest == null || User == null)                 //////////
@@ -40,7 +40,7 @@ namespace PRS_web.Controllers
             // if here, everything is good; we have a Purchase request
             return Json(purchaserequest, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Add([FromBody] PurchaseRequest purchaserequest, User Userid)
+        public ActionResult Add([FromBody] PurchaseRequest purchaserequest)
 
         {
             User tempUser = db.Users.Add(purchaserequest.UserId);  /////
