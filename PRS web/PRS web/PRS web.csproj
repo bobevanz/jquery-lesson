@@ -191,6 +191,10 @@
     <Compile Include="Migrations\201710031538099_added unique index.Designer.cs">
       <DependentUpon>201710031538099_added unique index.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710041530257_added get add change remove to Purchase request line items.cs" />
+    <Compile Include="Migrations\201710041530257_added get add change remove to Purchase request line items.Designer.cs">
+      <DependentUpon>201710041530257_added get add change remove to Purchase request line items.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\indexAttribute.cs" />
     <Compile Include="Models\Product.cs" />
@@ -304,6 +308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710031538099_added unique index.resx">
       <DependentUpon>201710031538099_added unique index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710041530257_added get add change remove to Purchase request line items.resx">
+      <DependentUpon>201710041530257_added get add change remove to Purchase request line items.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

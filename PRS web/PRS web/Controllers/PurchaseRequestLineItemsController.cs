@@ -18,9 +18,9 @@ namespace PRS_web.Controllers
 
         private void UpdatePurchaseRequestTotal(int prid) {
             double total = 0.0;
-            var purchaseRequestLineItem = db.PurchaseRequestLineItems.Where(p => p.PurchaseRequestId == prid);
+            var purchaseRequestLineItems = db.PurchaseRequestLineItems.Where(p => p.PurchaseRequestId == prid);
                 foreach (var purchaserequestlineitem in purchaseRequestLineItems) {
-                var subtotal = purchaseRequestLineItem.quantity * purchaserequestlineitem.Product.Price;
+                var subtotal = purchaserequestlineitem.Quantity * purchaserequestlineitem.Product.Price;
                 total += subtotal;
             }
             var purchaseRequest = db.PurchaseRequests.Find(prid);
@@ -52,11 +52,10 @@ namespace PRS_web.Controllers
             // if here, everything is good; we have a line item request
             return Json(purchaserequestlineitem, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Add([FromBody] PurchaseRequestLineItem purchaserequestlineitem, PurchaseRequest purchaserequest, Product product)
+        public ActionResult Add([FromBody] PurchaseRequestLineItem purchaserequestlineitem)
 
         {
-            PurchaseRequestLineItem tempPurchaseRequestLineItem = db.PurchaseRequestLineItems.Add(purchaserequestlineitem.PurchaseRequestId);  /////
-            if (purchaserequestlineitem == null || purchaserequestlineitem.PurchaseRequestId == null)
+            if (purchaserequestlineitem == null || purchaserequestlineitem.PurchaseRequestId == 0)
             {
                 return Json(new msg { Result = "Failure", Message = "Line item request parameter is missing or invalid." });
             }
@@ -68,11 +67,11 @@ namespace PRS_web.Controllers
         }
         public ActionResult Change([FromBody] PurchaseRequestLineItem purchaserequestlineitem)
         {
-            if (purchaserequestlineitem == null || purchaserequestlineitem.PurchaseRequestId == null || purchaserequestlineitem.Product == null)
+            if (purchaserequestlineitem == null || purchaserequestlineitem.PurchaseRequestId == 0)
             {
                 return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
             }
-            // If we get here, just update the product
+            // If we get here, just update the line item
             PurchaseRequestLineItem tempPurchaseRequestLineItem = db.PurchaseRequestLineItems.Find(purchaserequestlineitem.Id);
             tempPurchaseRequestLineItem.Id = purchaserequestlineitem.Id;
             tempPurchaseRequestLineItem.PurchaseRequestId = purchaserequestlineitem.PurchaseRequestId;
