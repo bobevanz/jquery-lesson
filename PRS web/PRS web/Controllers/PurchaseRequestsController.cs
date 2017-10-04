@@ -30,33 +30,39 @@ namespace PRS_web.Controllers
                 return Json(new msg { Result = "Failure", Message = "Id is Null" }, JsonRequestBehavior.AllowGet);
 
             }
-            PurchaseRequest purchaserequest = db.PurchaseRequests.Find(id);                //////////
-            User User = db.Users.Find(purchaserequest.UserId);     //////////
+            PurchaseRequest purchaserequest = db.PurchaseRequests.Find(id);
 
-            if (purchaserequest == null || User == null)                 //////////
+
+            if (purchaserequest == null)
             {
                 return Json(new msg { Result = "Failure", Message = "Id not found" }, JsonRequestBehavior.AllowGet);
             }
             // if here, everything is good; we have a Purchase request
-            return Json(purchaserequest, JsonRequestBehavior.AllowGet);
+            return new JsonNetResult { Data = purchaserequest };
         }
         public ActionResult Add([FromBody] PurchaseRequest purchaserequest) 
 
         {
-            User tempUser = db.Users.Add(purchaserequest.UserId);  /////
-            if (purchaserequest == null || purchaserequest.UserId == null)
+            User user = db.Users.Find(purchaserequest.UserId);  /////
+            if (user == null)
             {
-                return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
+                return Json(new msg { Result = "Failure", Message = "User id is missing or invalid." });
             }
+            
             // If we get here, add the Purchase request
-            db.Users.Add(purchaserequest.UserId);                             ////// 
+           
             db.PurchaseRequests.Add(purchaserequest);
             db.SaveChanges();
             return Json(new msg { Result = "Success", Message = "Add Successful" });
         }
         public ActionResult Change([FromBody] PurchaseRequest purchaserequest)
         {
-            if (purchaserequest == null || purchaserequest.UserId == null)
+            User user = db.Users.Find(purchaserequest.UserId); //returns a vendor for the ID or null if not found
+            if (user == null) //this is true if the id is not found
+            {
+                return Json(new msg { Result = "Failure", Message = "User Id FK is invalid" }, JsonRequestBehavior.AllowGet);
+            }
+            if (purchaserequest == null)
             {
                 return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
             }

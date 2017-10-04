@@ -31,40 +31,46 @@ namespace PRS_web.Controllers
 
             }
             Product product = db.Products.Find(ID);                
-            Vendor vendor = db.Vendors.Find(product.VendorId);     
+               
             
-            if (product == null || vendor == null)                 
+            if (product == null)                 
             {
                 return Json(new msg { Result = "Failure", Message = "Id not found" }, JsonRequestBehavior.AllowGet);
             }
-            // if here, everything is good; we have a product
             return Json(product, JsonRequestBehavior.AllowGet);
+           
         }
         public ActionResult Add([FromBody] Product product) {
-            if (product == null)
+            if (product == null || product.PartNumber ==null )
             {
                 return Json(new msg { Result = "Failure", Message = "Product is null" });
             }
-            var vendor = db.Vendors.Add(product.VendorId);
+            //**Foreign key issue:
+            Vendor vendor = db.Vendors.Find(product.VendorId); //returns a vendor for the ID or null if not found          
+                      
             if (vendor == null)
             {
                 return Json(new msg { Result = "Failure", Message = "Vendor Id FK is missing or invalid." });
             }
-            if(product.Price <= 0) {
-                return Json(new msg { Result = "Failure", Message = "product price is null." });
-            }
-            // If we get here, add the Product
-            db.Vendors.Add(product.VendorId);                             
+            
+            // If we get here, add the Product                            
             db.Products.Add(product);
             db.SaveChanges();
             return Json(new msg { Result = "Success", Message = "Add Successful" });
         }
         public ActionResult Change([FromBody] Product product)
         {
-            if (product == null || product.Name == null)
+            if (product == null || product.PartNumber == null)
             {
                 return Json(new msg { Result = "Failure", Message = "Product parameter is missing or invalid." });
             }
+            //Foreign key 
+            Vendor vendor = db.Vendors.Find(product.VendorId); 
+            if (vendor == null) 
+            {
+                return Json(new msg { Result = "Failure", Message = "Vendor Id not found" });
+            }
+
             // If we get here, just update the product
             Product tempProduct = db.Products.Find(product.ID);
             tempProduct.ID = product.ID;

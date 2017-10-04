@@ -35,17 +35,15 @@ namespace PRS_web.Controllers
 
         }
         // GET: Purchase requests
-        public ActionResult Get(PurchaseRequestLineItem Id)
+        public ActionResult Get(int? Id)
         {
             if (Id == null)
             {
                 return Json(new msg { Result = "Failure", Message = "Id is Null" }, JsonRequestBehavior.AllowGet);
 
             }
-            PurchaseRequestLineItem purchaserequestlineitem = db.PurchaseRequestLineItems.Find(Id);                //////////
-            PurchaseRequest purchaserequest = db.PurchaseRequests.Find(purchaserequestlineitem.PurchaseRequestId);     //////////
-            Product product = db.Products.Find(purchaserequestlineitem.ProductId);
-            if (purchaserequestlineitem == null || purchaserequest == null || product==null)                 //////////
+            PurchaseRequestLineItem purchaserequestlineitem = db.PurchaseRequestLineItems.Find(Id);                
+            if (purchaserequestlineitem == null )                
             {
                 return Json(new msg { Result = "Failure", Message = "Id not found" }, JsonRequestBehavior.AllowGet);
             }
@@ -55,34 +53,65 @@ namespace PRS_web.Controllers
         public ActionResult Add([FromBody] PurchaseRequestLineItem purchaserequestlineitem)
 
         {
-            if (purchaserequestlineitem == null || purchaserequestlineitem.PurchaseRequestId == 0)
+            if (purchaserequestlineitem == null )
             {
                 return Json(new msg { Result = "Failure", Message = "Line item request parameter is missing or invalid." });
             }
+            //**Foreign key issue:
+            PurchaseRequest purchaseRequest = db.PurchaseRequests.Find(purchaserequestlineitem.PurchaseRequestId); //returns a user for the ID or null if not found
+            if (purchaseRequest == null) //this is true if the id is not found
+            {
+                return Json(new msg { Result = "Failure", Message = "PurchaseRequest Id not found" }, JsonRequestBehavior.AllowGet);
+            }
+            Product product = db.Products.Find(purchaserequestlineitem.ProductId);
+            if (product == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "ProductId not found" }, JsonRequestBehavior.AllowGet);
+            }
             // If we get here, add the line item 
-            db.PurchaseRequestLineItems.Add(purchaserequestlineitem);
+             db.PurchaseRequestLineItems.Add(purchaserequestlineitem);
             db.SaveChanges();
             UpdatePurchaseRequestTotal(purchaserequestlineitem.PurchaseRequestId);
             return Json(new msg { Result = "Success", Message = "Add Successful" });
+           
         }
         public ActionResult Change([FromBody] PurchaseRequestLineItem purchaserequestlineitem)
         {
-            if (purchaserequestlineitem == null || purchaserequestlineitem.PurchaseRequestId == 0)
+            if (purchaserequestlineitem == null)
             {
                 return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
             }
-            // If we get here, just update the line item
-            PurchaseRequestLineItem tempPurchaseRequestLineItem = db.PurchaseRequestLineItems.Find(purchaserequestlineitem.Id);
-            tempPurchaseRequestLineItem.Id = purchaserequestlineitem.Id;
-            tempPurchaseRequestLineItem.PurchaseRequestId = purchaserequestlineitem.PurchaseRequestId;
-            tempPurchaseRequestLineItem.purchaserequest = purchaserequestlineitem.purchaserequest;
-            tempPurchaseRequestLineItem.ProductId = purchaserequestlineitem.ProductId;
-            tempPurchaseRequestLineItem.Product = purchaserequestlineitem.Product;
-            tempPurchaseRequestLineItem.Quantity = purchaserequestlineitem.Quantity;
+            //**Foreign key issue:
+            PurchaseRequest purchaseRequest = db.PurchaseRequests.Find(purchaserequestlineitem.PurchaseRequestId); //returns a user for the ID or null if not found
+            if (purchaseRequest == null) //this is true if the id is not found
+            {
+                return Json(new msg { Result = "Failure", Message = "PurchaseRequest Id not found" }, JsonRequestBehavior.AllowGet);
+            }
 
-            db.SaveChanges();
+            Product product = db.Products.Find(purchaserequestlineitem.ProductId);
+            if (product == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "ProductId not found" }, JsonRequestBehavior.AllowGet);
+            }
+
+            if (purchaserequestlineitem.Quantity > 0)
+            {
+                return Json(new msg { Result = "Failure", Message = "Quantity is invalid" }, JsonRequestBehavior.AllowGet);
+            }
+
+            var tempPurchaseRequestLineItem = db.PurchaseRequestLineItems.Find(purchaserequestlineitem.Id);
+            if (tempPurchaseRequestLineItem == null)
+            {
+                return Json(new msg { Result = "Failure", Message = "Purchase Request Line Item Id not found" }, JsonRequestBehavior.AllowGet);
+            }
+            tempPurchaseRequestLineItem.Quantity = purchaserequestlineitem.Quantity;
+            tempPurchaseRequestLineItem.ProductId = purchaserequestlineitem.ProductId;
+            tempPurchaseRequestLineItem.PurchaseRequestId = purchaserequestlineitem.PurchaseRequestId;
+
+            db.SaveChanges(); // data persistent in the database
             UpdatePurchaseRequestTotal(purchaserequestlineitem.PurchaseRequestId);
-            return Json(new msg { Result = "Success", Message = "Change Successful" });
+            return Json(new msg { Result = "Success", Message = "Add successful" }, JsonRequestBehavior.AllowGet);
+
 
         }
         public ActionResult Remove([FromBody] PurchaseRequestLineItem purchaserequestlineitem)
