@@ -48,7 +48,7 @@ namespace PRS_web.Controllers
             {
                 return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
             }
-            // If we get here, add the Product
+            // If we get here, add the Purchase request
             db.Users.Add(purchaserequest.UserId);                             ////// 
             db.PurchaseRequests.Add(purchaserequest);
             db.SaveChanges();

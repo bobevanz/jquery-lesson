@@ -16,6 +16,18 @@ namespace PRS_web.Controllers
     {
         private PRS_dbContext db = new PRS_dbContext();
 
+        private void UpdatePurchaseRequestTotal(int prid) {
+            double total = 0.0;
+            var purchaseRequestLineItem = db.PurchaseRequestLineItems.Where(p => p.PurchaseRequestId == prid);
+                foreach (var purchaserequestlineitem in purchaseRequestLineItems) {
+                var subtotal = purchaseRequestLineItem.quantity * purchaserequestlineitem.Product.Price;
+                total += subtotal;
+            }
+            var purchaseRequest = db.PurchaseRequests.Find(prid);
+            purchaseRequest.Total = total;
+            db.SaveChanges();
+               }
+
         public ActionResult List()
         {
             return Json(db.PurchaseRequestLineItems.ToList(), JsonRequestBehavior.AllowGet);
@@ -40,23 +52,23 @@ namespace PRS_web.Controllers
             // if here, everything is good; we have a line item request
             return Json(purchaserequestlineitem, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Add([FromBody] PurchaseRequestLineItem purchaserequestlineitem, PurchaseRequest purchaseRequest, Product product)
+        public ActionResult Add([FromBody] PurchaseRequestLineItem purchaserequestlineitem, PurchaseRequest purchaserequest, Product product)
 
         {
-            User tempUser = db.Users.Add(purchaserequestlineitem.purchaserequest);  /////
-            if (purchaserequest == null || purchaserequest.UserId == null)
+            PurchaseRequestLineItem tempPurchaseRequestLineItem = db.PurchaseRequestLineItems.Add(purchaserequestlineitem.PurchaseRequestId);  /////
+            if (purchaserequestlineitem == null || purchaserequestlineitem.PurchaseRequestId == null)
             {
-                return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
+                return Json(new msg { Result = "Failure", Message = "Line item request parameter is missing or invalid." });
             }
-            // If we get here, add the Product
-            db.Users.Add(purchaserequest.UserId);                             ////// 
-            db.PurchaseRequests.Add(purchaserequest);
+            // If we get here, add the line item 
+            db.PurchaseRequestLineItems.Add(purchaserequestlineitem);
             db.SaveChanges();
+            UpdatePurchaseRequestTotal(purchaserequestlineitem.PurchaseRequestId);
             return Json(new msg { Result = "Success", Message = "Add Successful" });
         }
         public ActionResult Change([FromBody] PurchaseRequestLineItem purchaserequestlineitem)
         {
-            if (purchaserequestlineitem == null || purchaserequestlineitem.purchaserequest == null || purchaserequestlineitem.Product == null)
+            if (purchaserequestlineitem == null || purchaserequestlineitem.PurchaseRequestId == null || purchaserequestlineitem.Product == null)
             {
                 return Json(new msg { Result = "Failure", Message = "Purchase request parameter is missing or invalid." });
             }
@@ -68,7 +80,9 @@ namespace PRS_web.Controllers
             tempPurchaseRequestLineItem.ProductId = purchaserequestlineitem.ProductId;
             tempPurchaseRequestLineItem.Product = purchaserequestlineitem.Product;
             tempPurchaseRequestLineItem.Quantity = purchaserequestlineitem.Quantity;
+
             db.SaveChanges();
+            UpdatePurchaseRequestTotal(purchaserequestlineitem.PurchaseRequestId);
             return Json(new msg { Result = "Success", Message = "Change Successful" });
 
         }
@@ -87,6 +101,7 @@ namespace PRS_web.Controllers
             }
             db.PurchaseRequestLineItems.Remove(tempPurchaseRequestLineItem);
             db.SaveChanges();
+            UpdatePurchaseRequestTotal(tempPurchaseRequestLineItem.PurchaseRequestId);
             return Json(new msg { Result = "Success", Message = "Remove Successful" });
 
         }
