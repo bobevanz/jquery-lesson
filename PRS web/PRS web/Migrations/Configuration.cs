@@ -12,7 +12,7 @@ namespace PRS_web.Migrations
         {
             AutomaticMigrationsEnabled = false;
         }
-        
+
         protected override void Seed(PRS_web.Models.PRS_dbContext context)
         {
             //  This method will be called after migrating to the latest version.
@@ -33,12 +33,12 @@ namespace PRS_web.Migrations
                         FirstName = "System", LastName = "Admin",
                         Phone = "513-264-2574", Email = "bobevans547@gmail.com",
                         IsReviewer = true, IsAdmin = true },
-                    new User {UserName = "User",Password = "User",
-                        FirstName = "Normal",LastName = "User",
+                    new User { UserName = "User", Password = "User",
+                        FirstName = "Normal", LastName = "User",
                         Phone = "513-555-5555", Email = "emailemail@gmail.com",
                         IsReviewer = true,
-                        IsAdmin = true}
-                                       
+                        IsAdmin = true }
+
                 );
             context.Vendors.AddOrUpdate(
                 v => v.Name,
@@ -54,8 +54,8 @@ namespace PRS_web.Migrations
                         Email = "amazonemail@gmail.com",
                         IsPreApproved = true
                     },
-                    
-                    new Vendor{
+
+                    new Vendor {
                         Code = "WAL",
                         Name = "Walmart",
                         Address = "234 gravel street",
@@ -66,7 +66,7 @@ namespace PRS_web.Migrations
                         Email = "walmartemail@gmail.com",
                         IsPreApproved = true
                     },
-                    new Vendor{
+                    new Vendor {
                         Code = "TAR",
                         Name = "Target",
                         Address = "567 sunshine lane",
@@ -78,8 +78,28 @@ namespace PRS_web.Migrations
                         IsPreApproved = true
                     }
                 );
-            
+            context.Products.AddOrUpdate(
+              p => p.Name,
+                  new Product
+                  {
+                      PartNumber = "T678",
+                      Name = "LCD Display",
+                      Price = 239.99,
+                      Unit = "Each",
+                      PhotoPath = "X",
+
+                  },
+                  new Product
+                  {
+                      PartNumber = "PS4",
+                      Name = "Playstation 4",
+                      Price = 349.99,
+                      Unit = "Each",
+                      PhotoPath = "X"
+                  }
+                  );
+                  }
         }
 
     }
-}
+
