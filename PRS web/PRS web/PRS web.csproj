@@ -195,6 +195,10 @@
     <Compile Include="Migrations\201710041530257_added get add change remove to Purchase request line items.Designer.cs">
       <DependentUpon>201710041530257_added get add change remove to Purchase request line items.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710041732268_new classes.cs" />
+    <Compile Include="Migrations\201710041732268_new classes.Designer.cs">
+      <DependentUpon>201710041732268_new classes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\indexAttribute.cs" />
     <Compile Include="Models\Product.cs" />
@@ -311,6 +315,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710041530257_added get add change remove to Purchase request line items.resx">
       <DependentUpon>201710041530257_added get add change remove to Purchase request line items.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710041732268_new classes.resx">
+      <DependentUpon>201710041732268_new classes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

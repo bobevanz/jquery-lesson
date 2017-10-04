@@ -40,7 +40,7 @@ namespace PRS_web.Controllers
             // if here, everything is good; we have a Purchase request
             return Json(purchaserequest, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult Add([FromBody] PurchaseRequest purchaserequest)
+        public ActionResult Add([FromBody] PurchaseRequest purchaserequest) 
 
         {
             User tempUser = db.Users.Add(purchaserequest.UserId);  /////
